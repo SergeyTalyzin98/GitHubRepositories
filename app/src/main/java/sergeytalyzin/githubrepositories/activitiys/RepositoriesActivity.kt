@@ -34,10 +34,6 @@ class RepositoriesActivity : MvpAppCompatActivity(), RepositoriesView {
 
         repositories_recycler.layoutManager = LinearLayoutManager(this@RepositoriesActivity)
         repositories_recycler.adapter = repositoriesAdapter
-
-//        val anim = ObjectAnimator.ofFloat(text_search_github, "Alpha", 0F, 1F)
-//        anim.duration = 2000
-//        anim.start()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -45,9 +41,8 @@ class RepositoriesActivity : MvpAppCompatActivity(), RepositoriesView {
 
         val token = Token.getTokenFromSharedPreferences(this@RepositoriesActivity)
 
-        if(token == Token.ANONYMOUS || token == "") {
+        if(token == Token.ANONYMOUS || token == "")
             menu.findItem(R.id.login_menu).isVisible = true
-        }
         else
             menu.findItem(R.id.logout_menu).isVisible = true
 
@@ -55,9 +50,11 @@ class RepositoriesActivity : MvpAppCompatActivity(), RepositoriesView {
 
         searchView = MenuItemCompat.getActionView(searchItem) as SearchView
 
-        if (!repositoriesPresenter.searchViewIsIconified) {
-            searchView!!.isIconified = false
-            searchView!!.setQuery(repositoriesPresenter.queryText, false)
+        searchView?.let {
+            if (!repositoriesPresenter.searchViewIsIconified) {
+                it.isIconified = false
+                it.setQuery(repositoriesPresenter.queryText, false)
+            }
         }
 
         searchView!!.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -77,6 +74,9 @@ class RepositoriesActivity : MvpAppCompatActivity(), RepositoriesView {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
+        // При выполнении метода
+        // Давнные о SearchView сохраняются в презентер
+        // Это помагает во время переворота экрана не терять состояние SearchView
         searchView?.let {
             if(!it.isIconified) {
                 repositoriesPresenter.searchViewIsIconified = false
@@ -89,8 +89,12 @@ class RepositoriesActivity : MvpAppCompatActivity(), RepositoriesView {
         }
     }
 
-    override fun showError(m: String) {
-        Toast.makeText(this@RepositoriesActivity, m, Toast.LENGTH_SHORT).show()
+    override fun showError(error: String) {
+        Toast.makeText(this@RepositoriesActivity, error, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showError(error: Int) {
+        Toast.makeText(this@RepositoriesActivity, getString(error), Toast.LENGTH_SHORT).show()
     }
 
     override fun setListAdapter(list: List<Repository.Item>) {

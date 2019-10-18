@@ -6,7 +6,7 @@ import sergeytalyzin.githubrepositories.interfeces.GitHubApi
 
 class RetrofitHelper(private val baseUrl: String) {
 
-    val api = Retrofit.Builder()
+    private val api = Retrofit.Builder()
         .baseUrl(baseUrl)
         .addConverterFactory(GsonConverterFactory.create())
         .build().create(GitHubApi::class.java)

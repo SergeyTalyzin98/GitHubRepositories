@@ -10,8 +10,6 @@ class Repository {
     val incompleteResults: Boolean? = null
     @SerializedName("items")
     val items: List<Item>? = null
-//    @JsonIgnore
-//    private val additionalProperties = HashMap<String, Any>()
 
     class Item {
         @SerializedName("id")
@@ -106,7 +104,8 @@ class Repository {
         val releasesUrl: String? = null
         @SerializedName("deployments_url")
         val deploymentsUrl: String? = null
-        @SerializedName("created_at") val createdAt: String? = null
+        @SerializedName("created_at")
+        val createdAt: String? = null
         @SerializedName("updated_at")
         val updatedAt: String? = null
         @SerializedName("pushed_at")
@@ -161,8 +160,6 @@ class Repository {
         val defaultBranch: String? = null
         @SerializedName("score")
         val score: Double? = null
-//        @JsonIgnore
-//        private val additionalProperties = HashMap<String, Any>()
 
         class License {
 
@@ -176,8 +173,6 @@ class Repository {
             val url: String? = null
             @SerializedName("node_id")
             val nodeId: String? = null
-//            @JsonIgnore
-//            private Map<String, Object> additionalProperties = new HashMap<String, Object>()
         }
 
         class Owner {

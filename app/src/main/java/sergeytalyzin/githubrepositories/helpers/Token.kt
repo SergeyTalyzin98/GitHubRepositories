@@ -4,6 +4,14 @@ import android.content.Context
 
 object Token {
 
+    // Этот объект работает с токеном
+    // Токен хранится в SharedPreferences
+    // Если пользователь выбирает анонимный вход,
+    // вместе токена сохраняется "anonymous".
+    // Это используется для того,
+    // что бы пользователю, при запуске приложения постоянно не показывался экран логина,
+    // при необходимости пользователь может на экране поиска войти либо выйти.
+
     private const val appPreferences = "appPreferences"
     private const val appPreferencesToken = "token"
 

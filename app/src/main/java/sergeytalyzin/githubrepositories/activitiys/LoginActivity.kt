@@ -22,6 +22,7 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        // Если пользователь авторизован переходим на экран поиска
         if(Token.getTokenFromSharedPreferences(this@LoginActivity) != "") {
             val intent = Intent(this@LoginActivity, RepositoriesActivity::class.java)
             startActivity(intent)
@@ -41,19 +42,18 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
         super.onResume()
         val uri = intent.data
 
-        if(uri != null) {
-            startLoading()
+        if(uri != null)
             loginPresenter.getToken(uri = uri)
-        }
-        else endLoading()
+        else
+            endLoading()
     }
 
-    override fun showError(e: String) {
-        Toast.makeText(this@LoginActivity, e, Toast.LENGTH_LONG).show()
+    override fun showError(error: String) {
+        Toast.makeText(this@LoginActivity, error, Toast.LENGTH_SHORT).show()
     }
 
-    override fun showError(e: Int) {
-        Toast.makeText(this@LoginActivity, getString(e), Toast.LENGTH_LONG).show()
+    override fun showError(error: Int) {
+        Toast.makeText(this@LoginActivity, getString(error), Toast.LENGTH_SHORT).show()
     }
 
     override fun saveToken(token: String) =

@@ -35,6 +35,8 @@ class LoginPresenter: MvpPresenter<LoginView>() {
 
     fun getToken(uri: Uri) {
 
+        viewState.startLoading()
+
         val token = RetrofitHelper(baseUrl = "https://github.com/").getToken(
             clientId = CLIENT_ID,
             clientSecret = CLIENT_SECRET,
@@ -48,12 +50,13 @@ class LoginPresenter: MvpPresenter<LoginView>() {
                     viewState.startRepositoryActivity()
                 }
                 catch (E: Exception) {
+                    viewState.endLoading()
                     viewState.showError(R.string.error_login)
                 }
             }
 
             override fun onFailure(call: Call<AccessToken>, t: Throwable) {
-                if(t.message != null)
+                if(t.message != null && t.message != "")
                     viewState.showError(t.message!!)
                 else
                     viewState.showError(R.string.error_login)

@@ -6,5 +6,6 @@
     <string name="text_login">Войти</string>
     <string name="text_logout">Выйти</string>
     <string name="error_login">Ошибка авторизации</string>
+    <string name="nothing_found">Ничего не найдено</string>
     <string name="text_search_github">Поиск GitHub репозиториев :)</string>
 </resources>
