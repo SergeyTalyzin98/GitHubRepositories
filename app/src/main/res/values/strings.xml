@@ -1,8 +1,10 @@
 <resources>
-    <string name="app_name">GitHubRepositories</string>
+    <string name="app_name">Repositories</string>
     <string name="text_authentication">авторизация</string>
     <string name="text_anonymously">продолжить анонимно</string>
-    <string name="text_search">Search</string>
+    <string name="text_search">Поиск</string>
     <string name="text_login">Войти</string>
     <string name="text_logout">Выйти</string>
+    <string name="error_login">Ошибка авторизации</string>
+    <string name="text_search_github">Поиск GitHub репозиториев :)</string>
 </resources>

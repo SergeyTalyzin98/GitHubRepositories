@@ -6,6 +6,7 @@ import com.arellomobile.mvp.MvpPresenter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import sergeytalyzin.githubrepositories.R
 import sergeytalyzin.githubrepositories.helpers.AccessToken
 import sergeytalyzin.githubrepositories.helpers.RetrofitHelper
 import sergeytalyzin.githubrepositories.helpers.Token
@@ -34,7 +35,7 @@ class LoginPresenter: MvpPresenter<LoginView>() {
 
     fun getToken(uri: Uri) {
 
-        val token = RetrofitHelper().getToken(
+        val token = RetrofitHelper(baseUrl = "https://github.com/").getToken(
             clientId = CLIENT_ID,
             clientSecret = CLIENT_SECRET,
             code = uri.getQueryParameter("code")!!
@@ -42,15 +43,20 @@ class LoginPresenter: MvpPresenter<LoginView>() {
 
         token.enqueue(object : Callback<AccessToken> {
             override fun onResponse(call: Call<AccessToken>, response: Response<AccessToken>) {
-                viewState.saveToken(response.body()!!.accessToken!!)
-                viewState.startRepositoryActivity()
+                try {
+                    viewState.saveToken(response.body()!!.accessToken!!)
+                    viewState.startRepositoryActivity()
+                }
+                catch (E: Exception) {
+                    viewState.showError(R.string.error_login)
+                }
             }
 
             override fun onFailure(call: Call<AccessToken>, t: Throwable) {
                 if(t.message != null)
                     viewState.showError(t.message!!)
                 else
-                    error("Ошибка авторизации")
+                    viewState.showError(R.string.error_login)
                 viewState.endLoading()
             }
         })

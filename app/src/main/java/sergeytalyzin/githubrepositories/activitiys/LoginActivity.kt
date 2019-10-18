@@ -52,6 +52,10 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
         Toast.makeText(this@LoginActivity, e, Toast.LENGTH_LONG).show()
     }
 
+    override fun showError(e: Int) {
+        Toast.makeText(this@LoginActivity, getString(e), Toast.LENGTH_LONG).show()
+    }
+
     override fun saveToken(token: String) =
         Token.saveToken(token = token, context = this@LoginActivity)
 

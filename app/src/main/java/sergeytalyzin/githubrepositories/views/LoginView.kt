@@ -8,5 +8,6 @@ interface LoginView: MvpView {
     fun startRepositoryActivity()
     fun startLoginProcess()
     fun showError(e: String)
+    fun showError(e: Int)
     fun saveToken(token: String)
 }
