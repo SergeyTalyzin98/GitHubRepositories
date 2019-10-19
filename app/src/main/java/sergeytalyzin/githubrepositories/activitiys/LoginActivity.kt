@@ -40,12 +40,9 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
 
     override fun onResume() {
         super.onResume()
-        val uri = intent.data
 
-        if(uri != null)
-            loginPresenter.getToken(uri = uri)
-        else
-            endLoading()
+        loginPresenter.getToken(uri = intent.data)
+        intent.data = null
     }
 
     override fun showError(error: String) {
@@ -68,6 +65,7 @@ class LoginActivity : MvpAppCompatActivity(), LoginView {
     override fun startLoginProcess() {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(loginPresenter.urlForLogin))
         startActivity(intent)
+        finish()
     }
 
     override fun startLoading() {

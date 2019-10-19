@@ -33,35 +33,37 @@ class LoginPresenter: MvpPresenter<LoginView>() {
         viewState.startLoginProcess()
     }
 
-    fun getToken(uri: Uri) {
+    fun getToken(uri: Uri?) {
 
-        viewState.startLoading()
+        if(uri != null) {
 
-        val token = RetrofitHelper(baseUrl = "https://github.com/").getToken(
-            clientId = CLIENT_ID,
-            clientSecret = CLIENT_SECRET,
-            code = uri.getQueryParameter("code")!!
-        )
+            viewState.startLoading()
 
-        token.enqueue(object : Callback<AccessToken> {
-            override fun onResponse(call: Call<AccessToken>, response: Response<AccessToken>) {
-                try {
-                    viewState.saveToken(response.body()!!.accessToken!!)
-                    viewState.startRepositoryActivity()
+            val token = RetrofitHelper(baseUrl = "https://github.com/").getToken(
+                clientId = CLIENT_ID,
+                clientSecret = CLIENT_SECRET,
+                code = uri.getQueryParameter("code")!!
+            )
+
+            token.enqueue(object : Callback<AccessToken> {
+                override fun onResponse(call: Call<AccessToken>, response: Response<AccessToken>) {
+                    try {
+                        viewState.saveToken(response.body()!!.accessToken!!)
+                        viewState.startRepositoryActivity()
+                    } catch (E: Exception) {
+                        viewState.endLoading()
+                        viewState.showError(R.string.error_login)
+                    }
                 }
-                catch (E: Exception) {
+
+                override fun onFailure(call: Call<AccessToken>, t: Throwable) {
+                    if (t.message != null && t.message != "")
+                        viewState.showError(t.message!!)
+                    else
+                        viewState.showError(R.string.error_login)
                     viewState.endLoading()
-                    viewState.showError(R.string.error_login)
                 }
-            }
-
-            override fun onFailure(call: Call<AccessToken>, t: Throwable) {
-                if(t.message != null && t.message != "")
-                    viewState.showError(t.message!!)
-                else
-                    viewState.showError(R.string.error_login)
-                viewState.endLoading()
-            }
-        })
+            })
+        }
     }
 }
