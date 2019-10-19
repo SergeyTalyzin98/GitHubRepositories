@@ -60,7 +60,7 @@ class RepositoriesActivity : MvpAppCompatActivity(), RepositoriesView {
         searchView!!.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextChange(newText: String): Boolean {
-                repositoriesPresenter.getRepositories(query = newText)
+                repositoriesPresenter.setQuery(query = newText)
                 return true
             }
 
